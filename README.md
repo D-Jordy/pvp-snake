@@ -1,2 +1,2 @@
-# PVP com.snakepvp.snake.Snake
+# PVP com.snakepvp.snake.Game
 ## JEBALLAH
