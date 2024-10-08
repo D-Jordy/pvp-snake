@@ -1,7 +1,6 @@
 package com.snakepvp.snake.entities.items;
 
 import com.github.hanyaeger.api.Coordinate2D;
-import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.snakepvp.snake.scenes.GameScene;
 
 import java.util.ArrayList;
@@ -25,13 +24,21 @@ public class ItemSpawner {
                 new Random().nextInt(items.size())
         );
 
-        item.setAnchorLocation(
-                new Coordinate2D(
-                        new Random().nextInt(10) * 50,
-                        new Random().nextInt(10) * 50
-                )
-        );
+        item.setAnchorLocation(getRandomGridCellCoords(scene.getGridStart(), scene.getGridEnd()));
 
         scene.introduceEntity(item);
+    }
+
+    public static Coordinate2D getRandomGridCellCoords(Coordinate2D start, Coordinate2D end) {
+        return new Coordinate2D(
+                getRandomCoordInRange((int) start.getX(), (int) end.getX()),
+                getRandomCoordInRange((int) start.getY(), (int) end.getY())
+        );
+    }
+
+    public static int getRandomCoordInRange(int min, int max) {
+        //Random int between min and max, rounded to nearest 50, with a minimum of 50
+        // to avoid spawning on the edge (out of bounds)
+        return (new Random().nextInt((max - min) / 50) * 50) + (min + 50);
     }
 }
