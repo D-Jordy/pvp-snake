@@ -14,13 +14,16 @@ import com.snakepvp.snake.scenes.grid.Grid;
 import java.util.ArrayList;
 
 public class GameScene extends DynamicScene {
+    private Coordinate2D gridStart = new Coordinate2D(0, 0);
+    private Coordinate2D gridEnd = new Coordinate2D(500, 500);
+
     @Override
     public void setupScene() {
     }
 
     @Override
     public void setupEntities() {
-        (new Grid(new Coordinate2D(0,0), new Coordinate2D(500,500))).draw(this);
+        (new Grid(gridStart, gridEnd)).draw(this);
 
         Snake snake = new Snake("snake.jpg", new Coordinate2D(400, 300), new Size(100, 100), this);
         addEntity(snake);
@@ -35,6 +38,14 @@ public class GameScene extends DynamicScene {
 
         ItemSpawner itemSpawner = new ItemSpawner(this, items);
         itemSpawner.spawnItem();
+    }
+
+    public Coordinate2D getGridStart() {
+        return gridStart;
+    }
+
+    public Coordinate2D getGridEnd() {
+        return gridEnd;
     }
 
     public void introduceEntity(SpriteEntity entity) {
