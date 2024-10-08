@@ -9,17 +9,19 @@ import com.snakepvp.snake.entities.items.ItemSpawner;
 import com.snakepvp.snake.entities.items.food.Apple;
 import com.snakepvp.snake.entities.playcontrolled.Snake;
 import com.snakepvp.snake.entities.playcontrolled.SnakeBody;
+import com.snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
 
 public class GameScene extends DynamicScene {
     @Override
     public void setupScene() {
-
     }
 
     @Override
     public void setupEntities() {
+        (new Grid(new Coordinate2D(0,0), new Coordinate2D(500,500))).draw(this);
+
         Snake snake = new Snake("snake.jpg", new Coordinate2D(400, 300), new Size(100, 100), this);
         addEntity(snake);
 
@@ -33,6 +35,10 @@ public class GameScene extends DynamicScene {
 
         ItemSpawner itemSpawner = new ItemSpawner(this, items);
         itemSpawner.spawnItem();
+    }
+
+    public void introduceEntity(SpriteEntity entity) {
+        addEntity(entity);
     }
 
     public void introduceEntity(SpriteEntity entity) {
