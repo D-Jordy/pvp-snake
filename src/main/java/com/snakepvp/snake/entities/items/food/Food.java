@@ -6,7 +6,7 @@ import com.snakepvp.snake.entities.items.Item;
 
 public abstract class Food extends Item {
     protected Food(String resource, Coordinate2D initialLocation) {
-        super(resource, initialLocation, new Size(50, 50));
+        super(resource, initialLocation);
     }
 
     public void handleCollision() {

@@ -40,8 +40,4 @@ public class GameScene extends DynamicScene {
     public void introduceEntity(SpriteEntity entity) {
         addEntity(entity);
     }
-
-    public void introduceEntity(SpriteEntity entity) {
-        addEntity(entity);
-    }
 }
