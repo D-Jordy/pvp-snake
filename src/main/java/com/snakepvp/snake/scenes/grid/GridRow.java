@@ -1,8 +1,10 @@
 package com.snakepvp.snake.scenes.grid;
 
+import com.snakepvp.snake.scenes.GameScene;
+
 import java.util.Arrays;
 
-public class GridRow {
+public class GridRow implements GridComponent {
     private int x;
     private int rowNumber;
     private GridCell[] cells;
@@ -17,7 +19,7 @@ public class GridRow {
     private void generateCells(int numOfCells, int gridCellStrokeLength) {
         cells = new GridCell[numOfCells];
         for (int i = 0; i < numOfCells; i++) {
-            cells[i] = new GridCell((gridCellStrokeLength* (i+1)), i+1);
+            cells[i] = new GridCell(this.x, (gridCellStrokeLength * (i + 1)), i + 1);
         }
     }
 
@@ -52,5 +54,11 @@ public class GridRow {
                 ", rowNumber='" + rowNumber + '\'' +
                 ", cells=" + Arrays.toString(cells) +
                 '}';
+    }
+
+    public void draw(GameScene scene) {
+        for (GridCell cell : cells) {
+            cell.draw(scene);
+        }
     }
 }
