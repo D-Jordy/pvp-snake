@@ -27,8 +27,8 @@ public class ItemSpawner {
 
         item.setAnchorLocation(
                 new Coordinate2D(
-                        new Random().nextInt((int) scene.getWidth() - 100),
-                        new Random().nextInt((int) scene.getHeight() - 100)
+                        new Random().nextInt(10) * 50,
+                        new Random().nextInt(10) * 50
                 )
         );
 
