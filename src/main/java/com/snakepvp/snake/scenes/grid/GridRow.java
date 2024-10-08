@@ -5,25 +5,25 @@ import com.snakepvp.snake.scenes.GameScene;
 import java.util.Arrays;
 
 public class GridRow implements GridComponent {
-    private int x;
+    private double x;
     private int rowNumber;
     private GridCell[] cells;
 
-    public GridRow(int x, int rowNumber, int numOfCells, int gridCellStrokeLength) {
+    public GridRow(double x, double startY, int rowNumber, int numOfCells, int gridCellStrokeLength) {
         this.x = x;
         this.rowNumber = rowNumber;
         cells = new GridCell[numOfCells];
-        generateCells(numOfCells, gridCellStrokeLength);
+        generateCells(startY, numOfCells, gridCellStrokeLength);
     }
 
-    private void generateCells(int numOfCells, int gridCellStrokeLength) {
+    private void generateCells(double startY, int numOfCells, int gridCellStrokeLength) {
         cells = new GridCell[numOfCells];
         for (int i = 0; i < numOfCells; i++) {
-            cells[i] = new GridCell(this.x, (gridCellStrokeLength * (i + 1)), i + 1);
+            cells[i] = new GridCell(this.x, (startY + (gridCellStrokeLength * (i + 1))), i + 1);
         }
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 

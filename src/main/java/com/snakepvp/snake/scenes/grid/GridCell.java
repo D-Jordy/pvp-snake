@@ -1,27 +1,27 @@
 package com.snakepvp.snake.scenes.grid;
 
 import com.github.hanyaeger.api.Coordinate2D;
+import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.entities.impl.SpriteEntity;
-import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.snakepvp.snake.scenes.GameScene;
 
 public class GridCell extends SpriteEntity implements GridComponent {
-    private int y;
-    private int x;
+    private double y;
+    private double x;
     private int cellNumber;
 
-    public GridCell(int x, int y, int cellNumber) {
-        super("gridcel.png", new Coordinate2D(x, y));
+    public GridCell(double x, double y, int cellNumber) {
+        super("gridcel.png", new Coordinate2D(x, y), new Size(50,50));
         this.y = y;
         this.x = x;
         this.cellNumber = cellNumber;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
