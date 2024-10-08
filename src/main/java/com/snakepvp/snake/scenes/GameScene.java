@@ -22,7 +22,7 @@ public class GameScene extends DynamicScene {
     public void setupEntities() {
         (new Grid(new Coordinate2D(0,0), new Coordinate2D(500,500))).draw(this);
 
-        Snake snake = new Snake("snake.jpg", new Coordinate2D(400, 300), new Size(100, 100), this);
+        Snake snake = new Snake("snake.jpg", new Coordinate2D(400, 300), new Size(50, 50), this);
         addEntity(snake);
 
         for (SnakeBody parts : snake.bodyParts) {
