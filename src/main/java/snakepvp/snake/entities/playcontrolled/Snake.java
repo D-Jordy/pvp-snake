@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class Snake extends DynamicSpriteEntity implements KeyListener, Collided, Collider {
     public ArrayList<SnakeBody> bodyParts = new ArrayList<>();
-    private final GameScene scene;
+    private GameScene scene;
     private int direction = 0;
     private int requestedDirection = -1; //-1 means no request
 
