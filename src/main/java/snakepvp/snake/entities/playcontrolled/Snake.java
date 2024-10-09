@@ -1,4 +1,4 @@
-package com.snakepvp.snake.entities.playcontrolled;
+package snakepvp.snake.entities.playcontrolled;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
@@ -6,7 +6,7 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
-import com.snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.GameScene;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
