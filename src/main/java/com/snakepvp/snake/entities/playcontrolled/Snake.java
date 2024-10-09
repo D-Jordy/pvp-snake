@@ -6,6 +6,7 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
+import com.snakepvp.snake.entities.items.Item;
 import com.snakepvp.snake.scenes.GameScene;
 import javafx.scene.input.KeyCode;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 
 public class Snake extends DynamicSpriteEntity implements KeyListener, Collided, Collider {
     public ArrayList<SnakeBody> bodyParts = new ArrayList<>();
-    private GameScene scene;
+    private final GameScene scene;
     private int direction = 0;
     private int requestedDirection = -1; //-1 means no request
 
@@ -58,14 +59,20 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collided,
 
     @Override
     public void onCollision(List<Collider> list) {
+        for (Collider collider : list) {
+
+            if (collider instanceof Item) {
+                ((Item) collider).handleCollision(this);
+            }
+        }
     }
 
-    public boolean isAlignedToGrid(){
+    public boolean isAlignedToGrid() {
         //checks if current location in scene is aligned to grid
         return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
     }
 
-    private void changeSnakeDirection(){
+    private void changeSnakeDirection() {
         //if there is a requested direction, change direction
         if (requestedDirection != -1) {
             direction = requestedDirection;
@@ -80,7 +87,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collided,
         Collided.super.checkForCollisions(colliders);
 
         //check if snake is aligned to grid, then change snake direction
-        if (isAlignedToGrid()){
+        if (isAlignedToGrid()) {
             changeSnakeDirection();
         }
     }

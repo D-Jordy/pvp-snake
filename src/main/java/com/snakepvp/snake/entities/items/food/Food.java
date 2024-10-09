@@ -1,15 +1,17 @@
 package com.snakepvp.snake.entities.items.food;
 
 import com.github.hanyaeger.api.Coordinate2D;
-import com.github.hanyaeger.api.Size;
 import com.snakepvp.snake.entities.items.Item;
+import com.snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Food extends Item {
     protected Food(String resource, Coordinate2D initialLocation) {
         super(resource, initialLocation);
     }
 
-    public void handleCollision() {
-        //snake grows
+    @Override
+    public void handleSnakeCollision(Snake snake) {
+        System.out.println("Snake ate " + getClass().getSimpleName());
+        snake.eat();
     }
 }
