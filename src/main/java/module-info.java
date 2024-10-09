@@ -1,5 +1,5 @@
 module snake {
     requires hanyaeger;
 
-    exports com.snakepvp.snake;
+    exports snakepvp.snake;
 }

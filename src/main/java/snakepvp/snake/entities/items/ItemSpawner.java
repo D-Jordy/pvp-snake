@@ -1,7 +1,7 @@
-package com.snakepvp.snake.entities.items;
+package snakepvp.snake.entities.items;
 
 import com.github.hanyaeger.api.Coordinate2D;
-import com.snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.GameScene;
 
 import java.util.ArrayList;
 import java.util.Random;
