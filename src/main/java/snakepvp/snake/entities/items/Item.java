@@ -1,11 +1,11 @@
-package com.snakepvp.snake.entities.items;
+package snakepvp.snake.entities.items;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
-import com.snakepvp.snake.entities.playcontrolled.Snake;
+import snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Item extends DynamicSpriteEntity implements Collider {
     public Item(String resource, Coordinate2D initialLocation) {
