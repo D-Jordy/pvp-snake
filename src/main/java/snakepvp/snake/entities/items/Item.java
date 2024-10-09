@@ -1,4 +1,4 @@
-package com.snakepvp.snake.entities.items;
+package snakepvp.snake.entities.items;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
