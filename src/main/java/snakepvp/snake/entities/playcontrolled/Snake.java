@@ -47,18 +47,15 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     }
 
     private Coordinate2D getTailSpawnLocation(Coordinate2D headLocation) {
-        Coordinate2D tailLocation = headLocation;
-        if (direction == 0) {
-            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY() - 50);
-        } else if (direction == 90) {
-            tailLocation = new Coordinate2D(headLocation.getX() - 50, headLocation.getY());
-        } else if (direction == 180) {
-            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY() + 50);
-        } else if (direction == 270) {
-            tailLocation = new Coordinate2D(headLocation.getX() + 50, headLocation.getY());
+        double x = headLocation.getX();
+        double y = headLocation.getY();
+        switch ((int) direction) {
+            case 0: return new Coordinate2D(x, y - 50);
+            case 90: return new Coordinate2D(x - 50, y);
+            case 180: return new Coordinate2D(x, y + 50);
+            case 270: return new Coordinate2D(x + 50, y);
+            default: return headLocation;
         }
-
-        return tailLocation;
     }
 
     private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed) {
@@ -68,9 +65,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     }
 
     public void eat() {
-//        bodyParts.add(new SnakeBody("snakeBody.png", new Coordinate2D(-100, -100), new Size(100, 100)));
         addBodyPart();
-//        this.scene.setupEntities();
     }
 
     private void addBodyPart() {
@@ -78,14 +73,15 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         Coordinate2D tailLocation = tail.returnLocationInScene();
         SnakeBodyPart newBodypart = new SnakeBody(color + "-snake-body.png", tailLocation, new Size(50, 50), tail.getDirection(), 1);
         double alternativeDirection = checkIfSpawnedOnBendpoint(tailLocation);
+
         if (alternativeDirection != -1) {
             newBodypart.setDirection(alternativeDirection);
         }
+
         bodyParts.add(newBodypart);
         bodyPartsToSpawn += 2;
         tail.pauseTail();
         scene.introduceEntity(newBodypart);
-
     }
 
     private double checkIfSpawnedOnBendpoint(Coordinate2D spawnLocation) {
