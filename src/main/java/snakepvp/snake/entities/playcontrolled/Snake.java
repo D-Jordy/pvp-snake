@@ -26,7 +26,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed) {
         //create entity
-        super("snakeHead.png", headLocation, size);
+        super("red-snake.png", headLocation, size);
 
         //set starting direction and speed. And add scene and grid
         this.direction = startDirection;
