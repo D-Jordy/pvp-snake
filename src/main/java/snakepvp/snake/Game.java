@@ -2,6 +2,7 @@ package snakepvp.snake;
 
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.YaegerGame;
+import snakepvp.snake.scenes.GameOverScene;
 import snakepvp.snake.scenes.GameScene;
 
 public class Game extends YaegerGame {
@@ -17,6 +18,7 @@ public class Game extends YaegerGame {
 
     @Override
     public void setupScenes() {
-        addScene(0, new GameScene());
+        addScene(0, new GameScene(this));
+        addScene(1, new GameOverScene());
     }
 }
