@@ -27,32 +27,6 @@ public class Grid implements GridComponent {
         }
     }
 
-//    public String getCurrentCell(int x, int y) {
-//        int rowNumber = 0;
-//        int cellNum = 0;
-//
-//        //get which row currentCell is in
-//        for (GridRow row : gridRows) {
-//            if (row.getX() == x) {
-//                rowNumber = row.getRowNumber();
-//
-//                //get which cell currentCell is in
-//                for (GridCell cell : row.getCells()) {
-//                    if (cell.getY() == y) {
-//                        cellNum = cell.getY();
-//                    }
-//                }
-//            }
-//        }
-//        //return which cell the snake is in
-//        return "Row: " + rowNumber + "\n" +
-//                "Cell: " + cellNum + "\n";
-//    }
-
-    public GridRow[] getGridRows() {
-        return gridRows;
-    }
-
     public void draw(GameScene scene) {
         for (GridRow row : gridRows) {
             row.draw(scene);

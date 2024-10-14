@@ -2,37 +2,40 @@ package snakepvp.snake.entities.items;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.grid.Grid;
+import snakepvp.snake.scenes.grid.GridCell;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ItemSpawner {
-    private GameScene scene;
+    private final GameScene scene;
+    private final Grid grid;
     private ArrayList<Item> items = new ArrayList<>();
 
-    public ItemSpawner(GameScene scene, ArrayList<Item> items) {
+    public ItemSpawner(GameScene scene, ArrayList<Item> items, Grid grid) {
         this.scene = scene;
         this.items = items;
+        this.grid = grid;
     }
 
     public void spawnItem() {
-        spawnItem(scene, items);
+        spawnItem(scene, items, this.grid.getRandomCell());
     }
 
-    public static void spawnItem(GameScene scene, ArrayList<Item> items) {
+    public static void spawnItem(GameScene scene, ArrayList<Item> items, GridCell cell) {
         Item item = items.get(
                 new Random().nextInt(items.size())
         );
 
-        item.setAnchorLocation(getRandomGridCellCoords(scene.getGridStart(), scene.getGridEnd()));
-
+        item.setAnchorLocation(getRandomGridCellCoords(scene.getGridStart(), scene.getGridEnd(), cell));
         scene.introduceEntity(item);
     }
 
-    public static Coordinate2D getRandomGridCellCoords(Coordinate2D start, Coordinate2D end) {
+    public static Coordinate2D getRandomGridCellCoords(Coordinate2D start, Coordinate2D end, GridCell cell) {
         return new Coordinate2D(
-                getRandomCoordInRange((int) start.getX(), (int) end.getX()),
-                getRandomCoordInRange((int) start.getY(), (int) end.getY())
+                cell.getAnchorLocation().getX(),
+                cell.getAnchorLocation().getY()
         );
     }
 
