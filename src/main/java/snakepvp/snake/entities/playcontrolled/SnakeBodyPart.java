@@ -11,6 +11,8 @@ public abstract class SnakeBodyPart extends DynamicSpriteEntity
     protected SnakeBodyPart(String resource, Coordinate2D initialLocation, Size size, double direction, double speed) {
         super(resource, initialLocation, size);
         this.direction = direction;
+        setDirection(direction);
+        setRotate(direction);
         setSpeed(speed);
     }
 

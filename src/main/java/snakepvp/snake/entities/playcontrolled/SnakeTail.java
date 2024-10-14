@@ -11,4 +11,15 @@ public class SnakeTail extends SnakeBodyPart {
         setSpeed(1);
     }
 
+    public double getDirection(){
+        return direction;
+    }
+
+    public void pauseTail(){
+        setSpeed(0);
+    }
+    public void continueTail(){
+        setSpeed(1);
+    }
+
 }

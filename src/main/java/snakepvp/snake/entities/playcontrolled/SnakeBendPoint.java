@@ -26,4 +26,6 @@ public class SnakeBendPoint {
         return location.getY();
     }
 
+
+
 }
