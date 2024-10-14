@@ -12,7 +12,7 @@ public class Game extends YaegerGame {
     @Override
     public void setupGame() {
         setGameTitle("SnakePvP");
-        setSize(new Size(800, 600));
+        setSize(new Size(800, 800));
     }
 
     @Override
