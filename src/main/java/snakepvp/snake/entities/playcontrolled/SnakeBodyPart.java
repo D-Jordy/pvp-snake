@@ -19,6 +19,7 @@ public abstract class SnakeBodyPart extends DynamicSpriteEntity
     protected void changeDirection(int direction){
         this.direction = direction;
         setDirection(direction);
+        setRotate(direction);
         changeSpriteOrientation(direction);
     };
 
