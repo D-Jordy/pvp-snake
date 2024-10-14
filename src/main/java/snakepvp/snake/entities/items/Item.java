@@ -9,6 +9,7 @@ import snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Item extends DynamicSpriteEntity implements Collider {
     public Item(String resource, Coordinate2D initialLocation) {
+
         super(resource, initialLocation, new Size(50, 50));
     }
 
