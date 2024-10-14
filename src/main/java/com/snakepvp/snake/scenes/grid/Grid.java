@@ -4,10 +4,12 @@ import com.github.hanyaeger.api.Coordinate2D;
 import com.snakepvp.snake.scenes.GameScene;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Grid implements GridComponent {
     private GridRow[] gridRows;
     private int gridCellStrokeLength = 50;
+    private int numOfRows, numOfCellsPerRow;
 
     public Grid(Coordinate2D start, Coordinate2D end) {
         generateRows(start, end);
@@ -15,13 +17,13 @@ public class Grid implements GridComponent {
 
     private void generateRows(Coordinate2D start, Coordinate2D end) {
         //calculate number of rows based on length and height, rounded down
-        int numOfRows = (int) Math.floor((end.getX() - start.getX()) / gridCellStrokeLength);
-        int numOfCellsPerRow = (int) Math.floor((end.getY() - start.getY()) / gridCellStrokeLength);
+        numOfRows = (int) Math.floor((end.getX() - start.getX()) / gridCellStrokeLength);
+        numOfCellsPerRow = (int) Math.floor((end.getY() - start.getY()) / gridCellStrokeLength);
 
         //create rows
         gridRows = new GridRow[numOfRows];
         for (int i = 0; i < numOfRows; i++) {
-            gridRows[i] = new GridRow((start.getX() + (gridCellStrokeLength * (i+1))), start.getY(), (i + 1), numOfCellsPerRow, gridCellStrokeLength);
+            gridRows[i] = new GridRow((start.getX() + (gridCellStrokeLength * i)), start.getY(), (i + 1), numOfCellsPerRow, gridCellStrokeLength);
         }
     }
 
@@ -51,14 +53,24 @@ public class Grid implements GridComponent {
         return gridRows;
     }
 
-    public void setGridRows(GridRow[] gridRows) {
-        this.gridRows = gridRows;
-    }
-
     public void draw(GameScene scene) {
         for (GridRow row : gridRows) {
             row.draw(scene);
         }
+    }
+
+    public GridCell getRandomCell(int spaceFromBorder){
+        Random rn = new Random();
+
+            int randomRow = rn.nextInt(spaceFromBorder, numOfRows - spaceFromBorder);
+            int randomCell = rn.nextInt(spaceFromBorder, numOfCellsPerRow - spaceFromBorder);
+
+
+        return gridRows[randomRow].getCells()[randomCell];
+    }
+
+    public GridCell getRandomCell(){
+        return getRandomCell(0);
     }
 
     @Override

@@ -7,26 +7,106 @@ import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
 import com.snakepvp.snake.scenes.GameScene;
+import com.snakepvp.snake.scenes.grid.Grid;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-public class Snake extends DynamicSpriteEntity implements KeyListener, Collided, Collider {
-    public ArrayList<SnakeBody> bodyParts = new ArrayList<>();
+public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided {
     private GameScene scene;
-    private int direction = 0;
+    private double direction = 0;
     private int requestedDirection = -1; //-1 means no request
+    private Grid grid;
+    private ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
+    private ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
 
-    public Snake(String resource, Coordinate2D initialLocation, Size size, GameScene scene) {
-        super(resource, initialLocation, size);
+    public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed) {
+        //create entity
+        super("snakeHead.png", headLocation, size);
+
+        //set starting direction and speed. And add scene and grid
+        this.direction = startDirection;
+        setSpeed(defaultSpeed);
+        setDirection(this.direction);
+        setRotate(this.direction);
         this.scene = scene;
+        this.grid = grid;
+
+        //add head to scene
+        this.scene.introduceEntity(this);
+
+        //spawn tail
+        bodyParts.add(spawnSnakeTail(getTailSpawnLocation(headLocation), size, scene, startDirection, defaultSpeed));
+
+    }
+
+    private Coordinate2D getTailSpawnLocation(Coordinate2D headLocation) {
+        Coordinate2D tailLocation = headLocation;
+        if (direction == 0){
+            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY()-50);
+        } else if (direction == 90){
+            tailLocation = new Coordinate2D(headLocation.getX()-50, headLocation.getY());
+        } else if (direction == 180){
+            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY()+50);
+        } else if (direction == 270){
+            tailLocation = new Coordinate2D(headLocation.getX()+50, headLocation.getY());
+        }
+
+        return tailLocation;
+    }
+
+    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed){
+        SnakeBodyPart tail = new SnakeTail("snakeTail.png", initialLocation, size , direction, speed);
+        scene.introduceEntity(tail);
+        return tail;
     }
 
     public void eat() {
-//        bodyParts.add(new SnakeBody("snake.jpg", new Coordinate2D(-100, -100), new Size(100, 100)));
+//        bodyParts.add(new SnakeBody("snakeBody.png", new Coordinate2D(-100, -100), new Size(100, 100)));
         this.scene.setupEntities();
+    }
+
+    private void changeSnakeDirection(){
+        //if there is a requested direction, change direction
+        if (requestedDirection != -1) {
+            setDirection(requestedDirection);
+            setRotate(requestedDirection);
+            bendPoints.add(new SnakeBendPoint(getLocationInScene(), requestedDirection));
+            requestedDirection = -1;
+        }
+    }
+
+    public void moveBodyPartWhenOverBendpoint(){
+        //bendpoint index that can be deleted if tail is over it
+        int bendPointIndexToDelete = -1;
+
+        //loop through all bodyparts
+        for (SnakeBodyPart bodyPart : bodyParts) {
+
+            //loop through all bendpoints
+            for (SnakeBendPoint bendPoint : bendPoints){
+                //check if body part is over bendpoint
+                if (bodyPart.returnLocationInScene().getX() == bendPoint.getX() && bodyPart.returnLocationInScene().getY() == bendPoint.getY()){
+                    //change body part direction
+                    bodyPart.changeDirection(bendPoint.getDirection());
+
+                    //checks if tail is over bendpoint
+                    if (bodyPart instanceof SnakeTail){
+                        bendPointIndexToDelete = bendPoints.indexOf(bendPoint);
+                    }
+                }
+            }
+        }
+
+        //if bendpoint index is set, delete bendpoint
+        if (bendPointIndexToDelete >= 0){
+            bendPoints.remove(bendPointIndexToDelete);
+        }
+
     }
 
     @Override
@@ -48,16 +128,19 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collided,
         if (pressedKeys.contains(KeyCode.SPACE)) {
 //            eat();
         }
-
-        for (SnakeBody bodyPart : bodyParts) {
-            bodyPart.setDirection(direction);
-        }
-
-        setSpeed(1);
     }
 
     @Override
-    public void onCollision(List<Collider> list) {
+    public void checkForCollisions(List<Collider> colliders) {
+        Collided.super.checkForCollisions(colliders);
+
+        //check if any bodypart is over bendpoint, and change directiob
+        moveBodyPartWhenOverBendpoint();
+
+        //check if head is aligned to grid, then change head direction
+        if (isAlignedToGrid()){
+            changeSnakeDirection();
+        }
     }
 
     public boolean isAlignedToGrid(){
@@ -65,23 +148,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collided,
         return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
     }
 
-    private void changeSnakeDirection(){
-        //if there is a requested direction, change direction
-        if (requestedDirection != -1) {
-            direction = requestedDirection;
-            setDirection(requestedDirection);
-            setRotate(direction);
-            requestedDirection = -1;
-        }
-    }
-
     @Override
-    public void checkForCollisions(List<Collider> colliders) {
-        Collided.super.checkForCollisions(colliders);
-
-        //check if snake is aligned to grid, then change snake direction
-        if (isAlignedToGrid()){
-            changeSnakeDirection();
-        }
+    public void onCollision(List<Collider> list) {
     }
 }

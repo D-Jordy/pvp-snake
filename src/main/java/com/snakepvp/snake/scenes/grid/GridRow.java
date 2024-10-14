@@ -19,7 +19,7 @@ public class GridRow implements GridComponent {
     private void generateCells(double startY, int numOfCells, int gridCellStrokeLength) {
         cells = new GridCell[numOfCells];
         for (int i = 0; i < numOfCells; i++) {
-            cells[i] = new GridCell(this.x, (startY + (gridCellStrokeLength * (i + 1))), i + 1);
+            cells[i] = new GridCell(this.x, (startY + (gridCellStrokeLength * (i))), i + 1);
         }
     }
 

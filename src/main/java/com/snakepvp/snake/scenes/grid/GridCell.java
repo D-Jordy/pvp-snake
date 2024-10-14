@@ -22,14 +22,20 @@ public class GridCell extends SpriteEntity implements GridComponent, Collider {
         return y;
     }
 
-    public void setY(double y) {
-        this.y = y;
+
+    public double getX() {
+        return x;
+    }
+
+    public int getCellNumber() {
+        return cellNumber;
     }
 
     @Override
     public String toString() {
         return "GridCell{" +
                 "y=" + y +
+                ", x=" + x +
                 ", cellNumber=" + cellNumber +
                 '}';
     }
