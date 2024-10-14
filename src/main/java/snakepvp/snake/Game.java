@@ -1,8 +1,8 @@
-package com.snakepvp.snake;
+package snakepvp.snake;
 
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.YaegerGame;
-import com.snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.GameScene;
 
 public class Game extends YaegerGame {
     public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class Game extends YaegerGame {
     @Override
     public void setupGame() {
         setGameTitle("SnakePvP");
-        setSize(new Size(800, 600));
+        setSize(new Size(800, 800));
     }
 
     @Override

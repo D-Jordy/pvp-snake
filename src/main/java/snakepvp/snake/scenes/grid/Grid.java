@@ -1,7 +1,7 @@
-package com.snakepvp.snake.scenes.grid;
+package snakepvp.snake.scenes.grid;
 
 import com.github.hanyaeger.api.Coordinate2D;
-import com.snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.GameScene;
 
 import java.util.Arrays;
 import java.util.Random;

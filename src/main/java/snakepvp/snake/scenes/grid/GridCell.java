@@ -1,10 +1,10 @@
-package com.snakepvp.snake.scenes.grid;
+package snakepvp.snake.scenes.grid;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.SpriteEntity;
-import com.snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.GameScene;
 
 public class GridCell extends SpriteEntity implements GridComponent, Collider {
     private double y;

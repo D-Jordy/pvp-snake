@@ -1,6 +1,6 @@
-package com.snakepvp.snake.scenes.grid;
+package snakepvp.snake.scenes.grid;
 
-import com.snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.GameScene;
 
 import java.util.Arrays;
 

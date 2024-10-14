@@ -1,24 +1,25 @@
-package com.snakepvp.snake.scenes;
+package snakepvp.snake.scenes;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.entities.impl.SpriteEntity;
 import com.github.hanyaeger.api.scenes.DynamicScene;
-import com.snakepvp.snake.entities.items.Item;
-import com.snakepvp.snake.entities.items.ItemSpawner;
-import com.snakepvp.snake.entities.items.food.Apple;
-import com.snakepvp.snake.entities.playcontrolled.Snake;
-import com.snakepvp.snake.entities.playcontrolled.SnakeBody;
-import com.snakepvp.snake.scenes.grid.Grid;
+import snakepvp.snake.entities.items.Item;
+import snakepvp.snake.entities.items.ItemSpawner;
+import snakepvp.snake.entities.items.food.Apple;
+import snakepvp.snake.entities.playcontrolled.Snake;
+import snakepvp.snake.entities.playcontrolled.SnakeBody;
+import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
 
 public class GameScene extends DynamicScene {
-    private Coordinate2D gridStart = new Coordinate2D(0, 0);
-    private Coordinate2D gridEnd = new Coordinate2D(500, 500);
+    private Coordinate2D gridStart = new Coordinate2D(0, 50);
+    private Coordinate2D gridEnd = new Coordinate2D(700, 650);
 
     @Override
     public void setupScene() {
+        setBackgroundImage("background.png");
     }
 
     @Override

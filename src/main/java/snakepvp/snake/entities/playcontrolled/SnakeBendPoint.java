@@ -1,4 +1,4 @@
-package com.snakepvp.snake.entities.playcontrolled;
+package snakepvp.snake.entities.playcontrolled;
 
 import com.github.hanyaeger.api.Coordinate2D;
 
