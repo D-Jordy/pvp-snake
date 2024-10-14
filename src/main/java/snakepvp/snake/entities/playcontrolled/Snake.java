@@ -6,25 +6,24 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
+import javafx.scene.input.KeyCode;
 import snakepvp.snake.entities.items.Item;
 import snakepvp.snake.scenes.GameScene;
-import javafx.scene.input.KeyCode;
 import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided {
-    private GameScene scene;
+    private final GameScene scene;
     private double direction = 0;
     private int requestedDirection = -1; //-1 means no request
-    private Grid grid;
-    private ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
-    private ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
+    private final Grid grid;
+    private final ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
+    private final ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
     private int bodyPartsToSpawn = 0;
-    private String color;
+    private final String color;
 
     public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed, String color) {
         //create entity
@@ -49,21 +48,21 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     private Coordinate2D getTailSpawnLocation(Coordinate2D headLocation) {
         Coordinate2D tailLocation = headLocation;
-        if (direction == 0){
-            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY()-50);
-        } else if (direction == 90){
-            tailLocation = new Coordinate2D(headLocation.getX()-50, headLocation.getY());
-        } else if (direction == 180){
-            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY()+50);
-        } else if (direction == 270){
-            tailLocation = new Coordinate2D(headLocation.getX()+50, headLocation.getY());
+        if (direction == 0) {
+            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY() - 50);
+        } else if (direction == 90) {
+            tailLocation = new Coordinate2D(headLocation.getX() - 50, headLocation.getY());
+        } else if (direction == 180) {
+            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY() + 50);
+        } else if (direction == 270) {
+            tailLocation = new Coordinate2D(headLocation.getX() + 50, headLocation.getY());
         }
 
         return tailLocation;
     }
 
-    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed){
-        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size , direction, speed);
+    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed) {
+        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size, direction, speed);
         scene.introduceEntity(tail);
         return tail;
     }
@@ -74,10 +73,10 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 //        this.scene.setupEntities();
     }
 
-    private void addBodyPart(){
+    private void addBodyPart() {
         SnakeTail tail = getSnakeTail();
         Coordinate2D tailLocation = tail.returnLocationInScene();
-        SnakeBodyPart newBodypart = new SnakeBody(color+ "-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), 1);
+        SnakeBodyPart newBodypart = new SnakeBody(color + "-snake-body.png", tailLocation, new Size(50, 50), tail.getDirection(), 1);
         double alternativeDirection = checkIfSpawnedOnBendpoint(tailLocation);
         if (alternativeDirection != -1) {
             newBodypart.setDirection(alternativeDirection);
@@ -89,7 +88,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     }
 
-    private double checkIfSpawnedOnBendpoint(Coordinate2D spawnLocation){
+    private double checkIfSpawnedOnBendpoint(Coordinate2D spawnLocation) {
         for (SnakeBendPoint snakeBendPoint : bendPoints) {
             if (snakeBendPoint.getX() == spawnLocation.getX() && snakeBendPoint.getY() == spawnLocation.getY()) {
                 return snakeBendPoint.getDirection();
@@ -107,7 +106,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         return null;
     }
 
-    private void changeSnakeDirection(){
+    private void changeSnakeDirection() {
         //if there is a requested direction, change direction
         if (requestedDirection != -1) {
             setDirection(requestedDirection);
@@ -117,7 +116,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         }
     }
 
-    public void moveBodyPartWhenOverBendpoint(){
+    public void moveBodyPartWhenOverBendpoint() {
         //bendpoint index that can be deleted if tail is over it
         int bendPointIndexToDelete = -1;
 
@@ -125,14 +124,14 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         for (SnakeBodyPart bodyPart : bodyParts) {
 
             //loop through all bendpoints
-            for (SnakeBendPoint bendPoint : bendPoints){
+            for (SnakeBendPoint bendPoint : bendPoints) {
                 //check if body part is over bendpoint
-                if (bodyPart.returnLocationInScene().getX() == bendPoint.getX() && bodyPart.returnLocationInScene().getY() == bendPoint.getY()){
+                if (bodyPart.returnLocationInScene().getX() == bendPoint.getX() && bodyPart.returnLocationInScene().getY() == bendPoint.getY()) {
                     //change body part direction
                     bodyPart.changeDirection(bendPoint.getDirection());
 
                     //checks if tail is over bendpoint
-                    if (bodyPart instanceof SnakeTail){
+                    if (bodyPart instanceof SnakeTail) {
                         bendPointIndexToDelete = bendPoints.indexOf(bendPoint);
                     }
                 }
@@ -140,7 +139,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         }
 
         //if bendpoint index is set, delete bendpoint
-        if (bendPointIndexToDelete >= 0){
+        if (bendPointIndexToDelete >= 0) {
             bendPoints.remove(bendPointIndexToDelete);
         }
 
@@ -171,28 +170,33 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     public void checkForCollisions(List<Collider> colliders) {
         Collided.super.checkForCollisions(colliders);
 
+        if (!this.isInsideGrid()) {
+            this.scene.changeScene(1);
+        }
+
         //check if any bodypart is over bendpoint, and change directiob
         moveBodyPartWhenOverBendpoint();
 
         //check if head is aligned to grid
-        if (isAlignedToGrid()){
+        if (isAlignedToGrid()) {
             //change snake head direction
             changeSnakeDirection();
-            if (bodyPartsToSpawn > 0){
+            if (bodyPartsToSpawn > 0) {
                 bodyPartsToSpawn--;
             }
-
-//            getSnakeTail().continueTail();
-
         }
 
-        if (bodyPartsToSpawn == 0){
+        if (bodyPartsToSpawn == 0) {
             getSnakeTail().continueTail();
         }
 
     }
 
-    public boolean isAlignedToGrid(){
+    public boolean isInsideGrid() {
+        return getLocationInScene().getX() >= this.scene.getGridStart().getX() && getLocationInScene().getX() <= this.scene.getGridEnd().getX() && getLocationInScene().getY() >= this.scene.getGridStart().getY() && getLocationInScene().getY() <= this.scene.getGridEnd().getY();
+    }
+
+    public boolean isAlignedToGrid() {
         //checks if current location in scene is aligned to grid
         return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
     }
