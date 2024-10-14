@@ -9,15 +9,14 @@ import snakepvp.snake.entities.items.Item;
 import snakepvp.snake.entities.items.ItemSpawner;
 import snakepvp.snake.entities.items.food.Apple;
 import snakepvp.snake.entities.playcontrolled.Snake;
-import snakepvp.snake.entities.playcontrolled.SnakeBody;
 import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
 
 public class GameScene extends DynamicScene {
     private final Game game;
-    private Coordinate2D gridStart = new Coordinate2D(0, 50);
-    private Coordinate2D gridEnd = new Coordinate2D(700, 650);
+    private final Coordinate2D gridStart = new Coordinate2D(50, 100);
+    private final Coordinate2D gridEnd = new Coordinate2D(750, 700);
 
     public GameScene(Game game) {
         this.game = game;
@@ -33,15 +32,14 @@ public class GameScene extends DynamicScene {
         Grid grid = new Grid(gridStart, gridEnd);
         grid.draw(this);
 
-        Snake snake = new Snake(new Coordinate2D(400, 300), new Size(50, 50), this, grid, 270 , 1, "red");
+        Snake snake = new Snake(new Coordinate2D(400, 300), new Size(50, 50), this, grid, 270, 1, "red");
 
         ArrayList<Item> items = new ArrayList<>();
 
         items.add(new Apple(new Coordinate2D(100, 100)));
 
-        ItemSpawner itemSpawner = new ItemSpawner(this, items);
+        ItemSpawner itemSpawner = new ItemSpawner(this, items, grid);
         itemSpawner.spawnItem();
-
     }
 
     public Coordinate2D getGridStart() {
