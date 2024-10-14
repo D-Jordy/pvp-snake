@@ -77,7 +77,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     private void addBodyPart(){
         SnakeTail tail = getSnakeTail();
         Coordinate2D tailLocation = tail.returnLocationInScene();
-        SnakeBodyPart newBodypart = new SnakeBody("blue-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), 1);
+        SnakeBodyPart newBodypart = new SnakeBody(color + "-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), 1);
         double alternativeDirection = checkIfSpawnedOnBendpoint(tailLocation);
         if (alternativeDirection != -1) {
             newBodypart.setDirection(alternativeDirection);
