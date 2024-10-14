@@ -23,10 +23,11 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     private Grid grid;
     private ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
     private ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
+    private int bodyPartsToSpawn = 0;
 
     public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed) {
         //create entity
-        super("red-snake.png", headLocation, size);
+        super("blue-snake.png", headLocation, size);
 
         //set starting direction and speed. And add scene and grid
         this.direction = startDirection;
@@ -60,14 +61,48 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     }
 
     private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed){
-        SnakeBodyPart tail = new SnakeTail("snakeTail.png", initialLocation, size , direction, speed);
+        SnakeBodyPart tail = new SnakeTail("blue-snake-tail.png", initialLocation, size , direction, speed);
         scene.introduceEntity(tail);
         return tail;
     }
 
     public void eat() {
 //        bodyParts.add(new SnakeBody("snakeBody.png", new Coordinate2D(-100, -100), new Size(100, 100)));
-        this.scene.setupEntities();
+            addBodyPart();
+//        this.scene.setupEntities();
+    }
+
+    private void addBodyPart(){
+        SnakeTail tail = getSnakeTail();
+        Coordinate2D tailLocation = tail.returnLocationInScene();
+        SnakeBodyPart newBodypart = new SnakeBody("blue-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), 1);
+        double alternativeDirection = checkIfSpawnedOnBendpoint(tailLocation);
+        if (alternativeDirection != -1) {
+            newBodypart.setDirection(alternativeDirection);
+        }
+        bodyParts.add(newBodypart);
+        bodyPartsToSpawn += 2;
+        tail.pauseTail();
+        scene.introduceEntity(newBodypart);
+
+    }
+
+    private double checkIfSpawnedOnBendpoint(Coordinate2D spawnLocation){
+        for (SnakeBendPoint snakeBendPoint : bendPoints) {
+            if (snakeBendPoint.getX() == spawnLocation.getX() && snakeBendPoint.getY() == spawnLocation.getY()) {
+                return snakeBendPoint.getDirection();
+            }
+        }
+        return -1.0;
+    }
+
+    private SnakeTail getSnakeTail() {
+        for (SnakeBodyPart bodyPart : bodyParts) {
+            if (bodyPart instanceof SnakeTail) {
+                return (SnakeTail) bodyPart;
+            }
+        }
+        return null;
     }
 
     private void changeSnakeDirection(){
@@ -137,10 +172,22 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         //check if any bodypart is over bendpoint, and change directiob
         moveBodyPartWhenOverBendpoint();
 
-        //check if head is aligned to grid, then change head direction
+        //check if head is aligned to grid
         if (isAlignedToGrid()){
+            //change snake head direction
             changeSnakeDirection();
+            if (bodyPartsToSpawn > 0){
+                bodyPartsToSpawn--;
+            }
+
+//            getSnakeTail().continueTail();
+
         }
+
+        if (bodyPartsToSpawn == 0){
+            getSnakeTail().continueTail();
+        }
+
     }
 
     public boolean isAlignedToGrid(){
@@ -150,5 +197,11 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     @Override
     public void onCollision(List<Collider> list) {
+        for (Collider collider : list) {
+
+            if (collider instanceof Item) {
+                ((Item) collider).handleCollision(this);
+            }
+        }
     }
 }
