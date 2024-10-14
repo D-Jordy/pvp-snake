@@ -24,14 +24,10 @@ public class GameScene extends DynamicScene {
 
     @Override
     public void setupEntities() {
-        (new Grid(gridStart, gridEnd)).draw(this);
+        Grid grid = new Grid(gridStart, gridEnd);
+        grid.draw(this);
 
-        Snake snake = new Snake("snake.jpg", new Coordinate2D(400, 300), new Size(50, 50), this);
-        addEntity(snake);
-
-        for (SnakeBody parts : snake.bodyParts) {
-            addEntity(parts);
-        }
+        Snake snake = new Snake(new Coordinate2D(400, 300), new Size(50, 50), this, grid, 270 , 1);
 
         ArrayList<Item> items = new ArrayList<>();
 
@@ -39,6 +35,7 @@ public class GameScene extends DynamicScene {
 
         ItemSpawner itemSpawner = new ItemSpawner(this, items);
         itemSpawner.spawnItem();
+
     }
 
     public Coordinate2D getGridStart() {
