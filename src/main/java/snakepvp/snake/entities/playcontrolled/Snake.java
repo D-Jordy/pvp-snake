@@ -14,7 +14,6 @@ import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided, UpdateExposer {
@@ -49,30 +48,25 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     }
 
     private Coordinate2D getTailSpawnLocation(Coordinate2D headLocation) {
-        Coordinate2D tailLocation = headLocation;
-        if (direction == 0){
-            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY()-50);
-        } else if (direction == 90){
-            tailLocation = new Coordinate2D(headLocation.getX()-50, headLocation.getY());
-        } else if (direction == 180){
-            tailLocation = new Coordinate2D(headLocation.getX(), headLocation.getY()+50);
-        } else if (direction == 270){
-            tailLocation = new Coordinate2D(headLocation.getX()+50, headLocation.getY());
+        double x = headLocation.getX();
+        double y = headLocation.getY();
+        switch ((int) direction) {
+            case 0: return new Coordinate2D(x, y - 50);
+            case 90: return new Coordinate2D(x - 50, y);
+            case 180: return new Coordinate2D(x, y + 50);
+            case 270: return new Coordinate2D(x + 50, y);
+            default: return headLocation;
         }
-
-        return tailLocation;
     }
 
-    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed){
-        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size , direction, speed);
+    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed) {
+        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size, direction, speed);
         scene.introduceEntity(tail);
         return tail;
     }
 
     public void eat() {
-//        bodyParts.add(new SnakeBody("snakeBody.png", new Coordinate2D(-100, -100), new Size(100, 100)));
         addBodyPart();
-//        this.scene.setupEntities();
     }
 
     private void addBodyPart(){
@@ -80,17 +74,14 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         Coordinate2D tailLocation = tail.returnLocationInScene();
         SnakeBodyPart newBodypart = new SnakeBody(color+ "-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), 1);
         double alternativeDirection = checkIfSpawnedOnBendpoint(tailLocation);
-        System.out.println(alternativeDirection);
-        /*TODO check when bodypart is over bendpoint, that it correctly rotatates to the direction of the the bendpoint, AND that the game still works after (not the case now)
-        *  what happens now is that for some reason, the bodyparts lose all sense and start doing theire own thing when bodyparts spawns over bendpoint */
         if (alternativeDirection != -1) {
             newBodypart.changeDirection(alternativeDirection);
         }
+        
         bodyParts.add(newBodypart);
         bodyPartsToSpawn += 1;
         tail.pauseTail();
         scene.introduceEntity(newBodypart);
-
     }
 
     private double checkIfSpawnedOnBendpoint(Coordinate2D spawnLocation){
@@ -189,6 +180,10 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     @Override
     public void explicitUpdate(long timestamp) {
+        if (!this.isInsideGrid()) {
+            this.scene.changeScene(1);
+        }
+
         //check if any bodypart is over bendpoint, and change directiob
         moveBodyPartWhenOverBendpoint();
 
@@ -203,6 +198,26 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
         if (bodyPartsToSpawn == 0){
             getSnakeTail().continueTail();
+        }
+
+    }
+
+    public boolean isInsideGrid() {
+        return getLocationInScene().getX() >= this.scene.getGridStart().getX() && getLocationInScene().getX() <= this.scene.getGridEnd().getX() && getLocationInScene().getY() >= this.scene.getGridStart().getY() && getLocationInScene().getY() <= this.scene.getGridEnd().getY();
+    }
+
+    public boolean isAlignedToGrid() {
+        //checks if current location in scene is aligned to grid
+        return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
+    }
+
+    @Override
+    public void onCollision(List<Collider> list) {
+        for (Collider collider : list) {
+
+            if (collider instanceof Item) {
+                ((Item) collider).handleCollision(this);
+            }
         }
     }
 }
