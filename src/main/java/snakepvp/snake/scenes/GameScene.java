@@ -7,7 +7,7 @@ import com.github.hanyaeger.api.scenes.DynamicScene;
 import snakepvp.snake.Game;
 import snakepvp.snake.entities.items.Item;
 import snakepvp.snake.entities.items.ItemSpawner;
-import snakepvp.snake.entities.items.food.Apple;
+import snakepvp.snake.entities.items.powerups.Star;
 import snakepvp.snake.entities.playcontrolled.Snake;
 import snakepvp.snake.scenes.grid.Grid;
 
@@ -36,7 +36,7 @@ public class GameScene extends DynamicScene {
 
         ArrayList<Item> items = new ArrayList<>();
 
-        items.add(new Apple(new Coordinate2D(100, 100)));
+        items.add(new Star(new Coordinate2D(100, 100)));
 
         ItemSpawner itemSpawner = new ItemSpawner(this, items, grid);
         itemSpawner.spawnItem();

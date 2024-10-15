@@ -7,9 +7,9 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
+import javafx.scene.input.KeyCode;
 import snakepvp.snake.entities.items.Item;
 import snakepvp.snake.scenes.GameScene;
-import javafx.scene.input.KeyCode;
 import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
@@ -57,11 +57,16 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         double x = headLocation.getX();
         double y = headLocation.getY();
         switch ((int) direction) {
-            case 0: return new Coordinate2D(x, y - 50);
-            case 90: return new Coordinate2D(x - 50, y);
-            case 180: return new Coordinate2D(x, y + 50);
-            case 270: return new Coordinate2D(x + 50, y);
-            default: return headLocation;
+            case 0:
+                return new Coordinate2D(x, y - 50);
+            case 90:
+                return new Coordinate2D(x - 50, y);
+            case 180:
+                return new Coordinate2D(x, y + 50);
+            case 270:
+                return new Coordinate2D(x + 50, y);
+            default:
+                return headLocation;
         }
     }
 
@@ -75,14 +80,14 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         addBodyPart();
     }
 
-    private void addBodyPart(){
+    private void addBodyPart() {
         //get tail location to spawn bodypart in correct position
         SnakeTail tail = getSnakeTail();
         Coordinate2D tailLocation = tail.returnLocationInScene();
 
         //create new snake
-        SnakeBodyPart newBodypart = new SnakeBody(color+ "-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), this.defaultSpeed);
-        
+        SnakeBodyPart newBodypart = new SnakeBody(color + "-snake-body.png", tailLocation, new Size(50, 50), tail.getDirection(), this.defaultSpeed);
+
         bodyParts.add(newBodypart);
         //adds the number of body parts to spawn, this is used to stop the tail
         bodyPartsToSpawn += 1;
@@ -104,7 +109,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         return null;
     }
 
-    private void changeSnakeDirection(){
+    private void changeSnakeDirection() {
         //if there is a requested direction, change direction
         if (requestedDirection != -1) {
             setDirection(requestedDirection);
@@ -117,7 +122,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         }
     }
 
-    public void moveBodyPartWhenOverBendpoint(){
+    public void moveBodyPartWhenOverBendpoint() {
         //bendpoint index that can be deleted if tail is over it
         int bendPointIndexToDelete = -1;
 
@@ -125,14 +130,14 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         for (SnakeBodyPart bodyPart : bodyParts) {
 
             //loop through all bendpoints
-            for (SnakeBendPoint bendPoint : bendPoints){
+            for (SnakeBendPoint bendPoint : bendPoints) {
                 //check if body part is over bendpoint
-                if (bodyPart.returnLocationInScene().getX() == bendPoint.getX() && bodyPart.returnLocationInScene().getY() == bendPoint.getY()){
+                if (bodyPart.returnLocationInScene().getX() == bendPoint.getX() && bodyPart.returnLocationInScene().getY() == bendPoint.getY()) {
                     //change body part direction
                     bodyPart.changeDirection(bendPoint.getDirection());
 
                     //checks if tail is over bendpoint
-                    if (bodyPart instanceof SnakeTail){
+                    if (bodyPart instanceof SnakeTail) {
                         bendPointIndexToDelete = bendPoints.indexOf(bendPoint);
                     }
                 }
@@ -140,7 +145,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         }
 
         //if bendpoint index is set, delete bendpoint
-        if (bendPointIndexToDelete >= 0){
+        if (bendPointIndexToDelete >= 0) {
             bendPoints.remove(bendPointIndexToDelete);
         }
 
@@ -181,15 +186,15 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         moveBodyPartWhenOverBendpoint();
 
         //check if head is aligned to grid
-        if (isAlignedToGrid()){
+        if (isAlignedToGrid()) {
             //change snake head direction
             changeSnakeDirection();
-            if (bodyPartsToSpawn > 0){
+            if (bodyPartsToSpawn > 0) {
                 bodyPartsToSpawn--;
             }
         }
 
-        if (bodyPartsToSpawn == 0){
+        if (bodyPartsToSpawn == 0) {
             getSnakeTail().continueTail();
         }
 
