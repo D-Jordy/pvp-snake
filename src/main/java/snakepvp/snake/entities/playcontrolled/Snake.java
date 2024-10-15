@@ -2,6 +2,7 @@ package snakepvp.snake.entities.playcontrolled;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
+import com.github.hanyaeger.api.UpdateExposer;
 import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided {
+public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided, UpdateExposer {
     private GameScene scene;
     private double direction = 0;
     private int requestedDirection = -1; //-1 means no request
@@ -79,11 +80,14 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         Coordinate2D tailLocation = tail.returnLocationInScene();
         SnakeBodyPart newBodypart = new SnakeBody(color+ "-snake-body.png", tailLocation, new Size(50,50), tail.getDirection(), 1);
         double alternativeDirection = checkIfSpawnedOnBendpoint(tailLocation);
+        System.out.println(alternativeDirection);
+        /*TODO check when bodypart is over bendpoint, that it correctly rotatates to the direction of the the bendpoint, AND that the game still works after (not the case now)
+        *  what happens now is that for some reason, the bodyparts lose all sense and start doing theire own thing when bodyparts spawns over bendpoint */
         if (alternativeDirection != -1) {
-            newBodypart.setDirection(alternativeDirection);
+            newBodypart.changeDirection(alternativeDirection);
         }
         bodyParts.add(newBodypart);
-        bodyPartsToSpawn += 2;
+        bodyPartsToSpawn += 1;
         tail.pauseTail();
         scene.introduceEntity(newBodypart);
 
@@ -162,34 +166,11 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         if (pressedKeys.contains(KeyCode.A)) {
             requestedDirection = 270;
         }
-        if (pressedKeys.contains(KeyCode.SPACE)) {
-//            eat();
-        }
     }
 
     @Override
     public void checkForCollisions(List<Collider> colliders) {
         Collided.super.checkForCollisions(colliders);
-
-        //check if any bodypart is over bendpoint, and change directiob
-        moveBodyPartWhenOverBendpoint();
-
-        //check if head is aligned to grid
-        if (isAlignedToGrid()){
-            //change snake head direction
-            changeSnakeDirection();
-            if (bodyPartsToSpawn > 0){
-                bodyPartsToSpawn--;
-            }
-
-//            getSnakeTail().continueTail();
-
-        }
-
-        if (bodyPartsToSpawn == 0){
-            getSnakeTail().continueTail();
-        }
-
     }
 
     public boolean isAlignedToGrid(){
@@ -200,10 +181,28 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     @Override
     public void onCollision(List<Collider> list) {
         for (Collider collider : list) {
-
             if (collider instanceof Item) {
                 ((Item) collider).handleCollision(this);
             }
+        }
+    }
+
+    @Override
+    public void explicitUpdate(long timestamp) {
+        //check if any bodypart is over bendpoint, and change directiob
+        moveBodyPartWhenOverBendpoint();
+
+        //check if head is aligned to grid
+        if (isAlignedToGrid()){
+            //change snake head direction
+            changeSnakeDirection();
+            if (bodyPartsToSpawn > 0){
+                bodyPartsToSpawn--;
+            }
+        }
+
+        if (bodyPartsToSpawn == 0){
+            getSnakeTail().continueTail();
         }
     }
 }
