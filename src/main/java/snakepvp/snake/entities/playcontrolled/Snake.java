@@ -164,20 +164,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         Collided.super.checkForCollisions(colliders);
     }
 
-    public boolean isAlignedToGrid(){
-        //checks if current location in scene is aligned to grid
-        return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
-    }
-
-    @Override
-    public void onCollision(List<Collider> list) {
-        for (Collider collider : list) {
-            if (collider instanceof Item) {
-                ((Item) collider).handleCollision(this);
-            }
-        }
-    }
-
     @Override
     public void explicitUpdate(long timestamp) {
         if (!this.isInsideGrid()) {
