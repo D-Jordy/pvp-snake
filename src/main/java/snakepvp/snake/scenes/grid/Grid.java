@@ -10,8 +10,11 @@ public class Grid implements GridComponent {
     private GridRow[] gridRows;
     private int gridCellStrokeLength = 50;
     private int numOfRows, numOfCellsPerRow;
+    private Coordinate2D gridStart, gridEnd;
 
     public Grid(Coordinate2D start, Coordinate2D end) {
+        this.gridStart = start;
+        this.gridEnd = end;
         generateRows(start, end);
     }
 
@@ -45,6 +48,22 @@ public class Grid implements GridComponent {
 
     public GridCell getRandomCell(){
         return getRandomCell(0);
+    }
+
+    public Coordinate2D getGridStart() {
+        return gridStart;
+    }
+
+    public void setGridStart(Coordinate2D gridStart) {
+        this.gridStart = gridStart;
+    }
+
+    public Coordinate2D getGridEnd() {
+        return gridEnd;
+    }
+
+    public void setGridEnd(Coordinate2D gridEnd) {
+        this.gridEnd = gridEnd;
     }
 
     @Override
