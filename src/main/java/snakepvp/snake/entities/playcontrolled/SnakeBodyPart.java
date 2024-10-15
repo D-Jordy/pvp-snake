@@ -16,11 +16,10 @@ public abstract class SnakeBodyPart extends DynamicSpriteEntity
         setSpeed(speed);
     }
 
-    protected void changeDirection(int direction){
+    public void changeDirection(double direction){
         this.direction = direction;
         setDirection(direction);
         setRotate(direction);
-        changeSpriteOrientation(direction);
     };
 
     private void changeSpriteOrientation(int direction){
@@ -34,6 +33,10 @@ public abstract class SnakeBodyPart extends DynamicSpriteEntity
 
     public Coordinate2D returnLocationInScene(){
         return getLocationInScene();
+    }
+
+    public void changeSpeed(double speed){
+        setSpeed(speed);
     }
 
 }
