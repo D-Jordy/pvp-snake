@@ -153,22 +153,21 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
      */
     @Override
     public void onPressedKeysChange(Set<KeyCode> pressedKeys) {
-        //sets requestedDirection
-        if (pressedKeys.contains(controls.getKeyCodes()[0])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[0]) && this.getDirection() != 0) {
             //up
             requestedDirection = 180;
         }
-        if (pressedKeys.contains(controls.getKeyCodes()[1])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[1]) && this.getDirection() != 180) {
             //down
             requestedDirection = 0;
         }
 
-        if (pressedKeys.contains(controls.getKeyCodes()[2])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[2]) && this.getDirection() != 90) {
             //left
             requestedDirection = 270;
         }
 
-        if (pressedKeys.contains(controls.getKeyCodes()[3])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[3]) && this.getDirection() != 270) {
             //right
             requestedDirection = 90;
         }
