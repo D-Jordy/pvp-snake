@@ -2,13 +2,16 @@ package snakepvp.snake.entities.playcontrolled;
 
 import javafx.scene.input.KeyCode;
 
+/**
+ * Enum for the different control schemes for Snakes
+ */
 public enum SnakeControls {
-    ARROWS,
-    WASD,
-    IJKL,
-    NUMPAD;
+    ARROWS, WASD, IJKL, NUMPAD;
 
-    public KeyCode[] getControls() {
+    /**
+     * @return KeyCode[ ] with the KeyCodes for the control scheme
+     */
+    public KeyCode[] getKeyCodes() {
         switch (this) {
             case ARROWS:
                 return new KeyCode[]{KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT};

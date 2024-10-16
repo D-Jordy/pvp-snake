@@ -146,29 +146,39 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     }
 
+    /**
+     * This method is called when the state of the pressed keys changes. It is called by the {@link com.github.hanyaeger.api.userinput.KeyListener} interface.
+     *
+     * @param pressedKeys A {@link Set} of {@code KeyCode} representations of the keys that are currently pressed
+     */
     @Override
     public void onPressedKeysChange(Set<KeyCode> pressedKeys) {
         //sets requestedDirection
-        if (pressedKeys.contains(controls.getControls()[0])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[0])) {
             //up
             requestedDirection = 180;
         }
-        if (pressedKeys.contains(controls.getControls()[1])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[1])) {
             //down
             requestedDirection = 0;
         }
 
-        if (pressedKeys.contains(controls.getControls()[2])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[2])) {
             //left
             requestedDirection = 270;
         }
 
-        if (pressedKeys.contains(controls.getControls()[3])) {
+        if (pressedKeys.contains(controls.getKeyCodes()[3])) {
             //right
             requestedDirection = 90;
         }
     }
 
+    /**
+     * This method is called when the {@link Collider} should check for collisions with other {@link Collider}s.
+     *
+     * @param colliders a {@link Set} of colliders that should be checked for collisions
+     */
     @Override
     public void checkForCollisions(List<Collider> colliders) {
         Collided.super.checkForCollisions(colliders);
@@ -177,7 +187,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     @Override
     public void explicitUpdate(long timestamp) {
         //checks if snake is not in grid anymore, then changes scene
-        if (!this.isInsideGrid()) {
+        if (!this.grid.isEntityOnGrid(this)) {
             this.scene.changeScene(1);
         }
 
@@ -185,7 +195,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         moveBodyPartWhenOverBendpoint();
 
         //check if head is aligned to grid
-        if (isAlignedToGrid()) {
+        if (this.grid.isEntityAlignedToGrid(this)) {
             //change snake head direction
             changeSnakeDirection();
             if (bodyPartsToSpawn > 0) {
@@ -197,15 +207,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
             getSnakeTail().continueTail();
         }
 
-    }
-
-    public boolean isInsideGrid() {
-        return getLocationInScene().getX() >= this.grid.getGridStart().getX() && getLocationInScene().getX() <= this.grid.getGridEnd().getX() && getLocationInScene().getY() >= this.grid.getGridStart().getY() && getLocationInScene().getY() <= this.grid.getGridEnd().getY();
-    }
-
-    public boolean isAlignedToGrid() {
-        //checks if current location in scene is aligned to grid
-        return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
     }
 
     @Override
