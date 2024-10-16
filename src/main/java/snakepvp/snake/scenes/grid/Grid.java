@@ -1,6 +1,7 @@
 package snakepvp.snake.scenes.grid;
 
 import com.github.hanyaeger.api.Coordinate2D;
+import com.github.hanyaeger.api.entities.impl.SpriteEntity;
 import snakepvp.snake.scenes.GameScene;
 
 import java.util.Arrays;
@@ -36,17 +37,26 @@ public class Grid implements GridComponent {
         }
     }
 
-    public GridCell getRandomCell(int spaceFromBorder){
+    public GridCell getRandomCell(int spaceFromBorder) {
         Random rn = new Random();
 
-            int randomRow = rn.nextInt(spaceFromBorder, numOfRows - spaceFromBorder);
-            int randomCell = rn.nextInt(spaceFromBorder, numOfCellsPerRow - spaceFromBorder);
+        int randomRow = rn.nextInt(spaceFromBorder, numOfRows - spaceFromBorder);
+        int randomCell = rn.nextInt(spaceFromBorder, numOfCellsPerRow - spaceFromBorder);
 
 
         return gridRows[randomRow].getCells()[randomCell];
     }
 
-    public GridCell getRandomCell(){
+    public boolean isEntityOnGrid(SpriteEntity entity) {
+        return entity.getAnchorLocation().getX() >= gridStart.getX() && entity.getAnchorLocation().getX() <= gridEnd.getX() && entity.getAnchorLocation().getY() >= gridStart.getY() && entity.getAnchorLocation().getY() <= gridEnd.getY();
+    }
+
+    public boolean isEntityAlignedToGrid(SpriteEntity entity) {
+        return ((entity.getAnchorLocation().getX() % gridCellStrokeLength) == 0) && ((entity.getAnchorLocation().getY() % gridCellStrokeLength) == 0);
+    }
+
+
+    public GridCell getRandomCell() {
         return getRandomCell(0);
     }
 

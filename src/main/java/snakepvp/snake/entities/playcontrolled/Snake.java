@@ -18,39 +18,40 @@ import java.util.Set;
 
 public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided, UpdateExposer {
     private final GameScene scene;
+    private final Grid grid;
+    private final String color;
+    private SnakeControls controls;
+    private final double defaultSpeed;
+    private final ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
+    private int bodyPartsToSpawn = 0;
+    private final ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
     private double direction = 0;
     private int requestedDirection = -1; //-1 means no request
-    private final Grid grid;
-    private final ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
-    private final ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
-    private final double defaultSpeed;
-    private int bodyPartsToSpawn = 0;
-    private final String color;
 
-    public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed, String color) {
-        //create entity
+    public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed, String color, SnakeControls controls) {
         super(color + "-snake.png", headLocation, size);
 
         this.color = color;
-        //set starting direction and speed. And add scene and grid
         this.direction = startDirection;
         this.defaultSpeed = defaultSpeed;
+        this.scene = scene;
+        this.grid = grid;
+        this.controls = controls;
 
-        //set speed, direction and rotation
-        setSpeed(defaultSpeed);
+        //Set speed, direction and rotation
+        setSpeed(this.defaultSpeed);
         setDirection(this.direction);
         setRotate(this.direction);
 
-        //set scene and grid
-        this.scene = scene;
-        this.grid = grid;
-
-        //add head to scene
+        //Add head and tail
         this.scene.introduceEntity(this);
-
-        //spawn tail
         bodyParts.add(spawnSnakeTail(getTailSpawnLocation(headLocation), size, scene, startDirection, defaultSpeed));
+    }
 
+    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed) {
+        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size, direction, speed);
+        scene.introduceEntity(tail);
+        return tail;
     }
 
     private Coordinate2D getTailSpawnLocation(Coordinate2D headLocation) {
@@ -68,12 +69,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
             default:
                 return headLocation;
         }
-    }
-
-    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed) {
-        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size, direction, speed);
-        scene.introduceEntity(tail);
-        return tail;
     }
 
     public void eat() {
@@ -151,25 +146,39 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
     }
 
+    /**
+     * This method is called when the state of the pressed keys changes. It is called by the {@link com.github.hanyaeger.api.userinput.KeyListener} interface.
+     *
+     * @param pressedKeys A {@link Set} of {@code KeyCode} representations of the keys that are currently pressed
+     */
     @Override
     public void onPressedKeysChange(Set<KeyCode> pressedKeys) {
         //sets requestedDirection
-        if (pressedKeys.contains(KeyCode.W)) {
+        if (pressedKeys.contains(controls.getKeyCodes()[0])) {
+            //up
             requestedDirection = 180;
         }
-        if (pressedKeys.contains(KeyCode.D)) {
-            requestedDirection = 90;
-        }
-
-        if (pressedKeys.contains(KeyCode.S)) {
+        if (pressedKeys.contains(controls.getKeyCodes()[1])) {
+            //down
             requestedDirection = 0;
         }
 
-        if (pressedKeys.contains(KeyCode.A)) {
+        if (pressedKeys.contains(controls.getKeyCodes()[2])) {
+            //left
             requestedDirection = 270;
+        }
+
+        if (pressedKeys.contains(controls.getKeyCodes()[3])) {
+            //right
+            requestedDirection = 90;
         }
     }
 
+    /**
+     * This method is called when the {@link Collider} should check for collisions with other {@link Collider}s.
+     *
+     * @param colliders a {@link Set} of colliders that should be checked for collisions
+     */
     @Override
     public void checkForCollisions(List<Collider> colliders) {
         Collided.super.checkForCollisions(colliders);
@@ -178,15 +187,15 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     @Override
     public void explicitUpdate(long timestamp) {
         //checks if snake is not in grid anymore, then changes scene
-        if (!this.isInsideGrid()) {
+        if (!this.grid.isEntityOnGrid(this)) {
             this.scene.changeScene(1);
         }
 
-        //check if any bodypart is over bendpoint, and change directiob
+        //check if any bodypart is over bendpoint, and change direction
         moveBodyPartWhenOverBendpoint();
 
         //check if head is aligned to grid
-        if (isAlignedToGrid()) {
+        if (this.grid.isEntityAlignedToGrid(this)) {
             //change snake head direction
             changeSnakeDirection();
             if (bodyPartsToSpawn > 0) {
@@ -198,15 +207,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
             getSnakeTail().continueTail();
         }
 
-    }
-
-    public boolean isInsideGrid() {
-        return getLocationInScene().getX() >= this.grid.getGridStart().getX() && getLocationInScene().getX() <= this.grid.getGridEnd().getX() && getLocationInScene().getY() >= this.grid.getGridStart().getY() && getLocationInScene().getY() <= this.grid.getGridEnd().getY();
-    }
-
-    public boolean isAlignedToGrid() {
-        //checks if current location in scene is aligned to grid
-        return ((getLocationInScene().getX() % 50) == 0) && ((getLocationInScene().getY() % 50) == 0);
     }
 
     @Override
