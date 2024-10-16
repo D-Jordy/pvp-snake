@@ -17,15 +17,15 @@ import java.util.List;
 import java.util.Set;
 
 public class Snake extends DynamicSpriteEntity implements KeyListener, Collider, Collided, UpdateExposer {
-    private GameScene scene;
+    private final GameScene scene;
     private double direction = 0;
     private int requestedDirection = -1; //-1 means no request
-    private Grid grid;
-    private ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
-    private ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
-    private double defaultSpeed;
+    private final Grid grid;
+    private final ArrayList<SnakeBodyPart> bodyParts = new ArrayList<>();
+    private final ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
+    private final double defaultSpeed;
     private int bodyPartsToSpawn = 0;
-    private String color;
+    private final String color;
 
     public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed, String color) {
         //create entity
@@ -215,6 +215,12 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
             if (collider instanceof Item) {
                 ((Item) collider).handleCollision(this);
+            }
+
+            if (collider instanceof SnakeBodyPart) {
+                if (((SnakeBodyPart) collider).getAnchorLocation().distance(this.getAnchorLocation()) < 5) {
+                    this.scene.changeScene(1);
+                }
             }
         }
     }
