@@ -113,6 +113,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
             bendPoints.add(new SnakeBendPoint(getLocationInScene(), requestedDirection));
 
             //set requestedDirection to -1 to tell code that there is no requested direction
+            //poep
             requestedDirection = -1;
         }
     }
