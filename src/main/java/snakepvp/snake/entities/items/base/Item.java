@@ -1,4 +1,4 @@
-package snakepvp.snake.entities.items;
+package snakepvp.snake.entities.items.base;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
@@ -8,14 +8,17 @@ import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Item extends DynamicSpriteEntity implements Collider {
-    public Item(String resource, Coordinate2D initialLocation) {
 
+    public Item(String resource, Coordinate2D initialLocation) {
         super(resource, initialLocation, new Size(50, 50));
     }
 
-    public void handleCollision(Collided collider) {
+    public void handleCollision(Collided collider, Collider collidedItem) {
         if (collider instanceof Snake && ((Snake) collider).getAnchorLocation().equals(this.getAnchorLocation())) {
             handleSnakeCollision((Snake) collider);
+            System.out.println("test");
+        ((Item) collidedItem).remove();
+
         }
     }
 

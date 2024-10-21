@@ -7,7 +7,7 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
-import snakepvp.snake.entities.items.Item;
+import snakepvp.snake.entities.items.base.Item;
 import snakepvp.snake.scenes.GameScene;
 import javafx.scene.input.KeyCode;
 import snakepvp.snake.scenes.grid.Grid;
@@ -202,7 +202,8 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         for (Collider collider : list) {
 
             if (collider instanceof Item) {
-                ((Item) collider).handleCollision(this);
+                ((Item) collider).handleCollision(this, collider);
+
             }
         }
     }
