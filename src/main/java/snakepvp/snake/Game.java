@@ -4,10 +4,11 @@ import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.YaegerGame;
 import snakepvp.snake.scenes.GameOverScene;
 import snakepvp.snake.scenes.GameScene;
+import snakepvp.snake.scenes.TitleScene;
 
 public class Game extends YaegerGame {
     public static void main(String[] args) {
-       launch(args);
+        launch(args);
     }
 
     @Override
@@ -18,7 +19,8 @@ public class Game extends YaegerGame {
 
     @Override
     public void setupScenes() {
-        addScene(0, new GameScene(this));
-        addScene(1, new GameOverScene());
+        addScene(0, new TitleScene());
+        addScene(1, new GameScene(this));
+        addScene(2, new GameOverScene());
     }
 }

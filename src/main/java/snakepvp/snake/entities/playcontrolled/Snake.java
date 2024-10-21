@@ -219,13 +219,14 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
             if (collider instanceof SnakeBodyPart) {
                 if (((SnakeBodyPart) collider).getAnchorLocation().distance(this.getAnchorLocation()) < 5) {
-                    this.scene.changeScene(1);
+                    this.scene.changeScene(2);
                 }
             }
 
             if (collider instanceof Snake) {
                 if (((Snake) collider).getAnchorLocation().distance(this.getAnchorLocation()) < 5) {
-                    this.scene.changeScene(1);
+                    //additional check, if you hit the side of the other snake, you die
+                    this.scene.changeScene(2);
                 }
             }
         }
