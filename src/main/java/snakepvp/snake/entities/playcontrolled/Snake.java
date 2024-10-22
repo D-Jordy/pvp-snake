@@ -243,10 +243,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
      * @return if this snake hit the other snake from the side
      */
     public boolean collidedFromSide(Snake colidedSnake) {
-        if (this.getDirection() == colidedSnake.getDirection() || this.getDirection() == (colidedSnake.getDirection() + 180) % 360) {
-            return false;
-        }
-
-        return true;
+    return this.getDirection() != colidedSnake.getDirection() && this.getDirection() != (colidedSnake.getDirection() + 180) % 360;
     }
 }

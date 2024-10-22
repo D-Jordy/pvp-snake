@@ -6,11 +6,14 @@ import javafx.scene.paint.Color;
 import snakepvp.snake.Game;
 import snakepvp.snake.entities.menu.Button;
 
+import java.util.ArrayList;
+
 public class TitleScene extends StaticScene {
-    private Button playButton;
+    private final ArrayList<Button> buttons = new ArrayList<>();
 
     public TitleScene(Game game) {
-        this.playButton = new Button(new Coordinate2D(345, 620), "Play", Color.DARKBLUE, Color.BLUE, game, 1);
+        this.buttons.add(new Button(new Coordinate2D(335, 620), "Single", Color.DARKBLUE, Color.BLUE, game, 1));
+        this.buttons.add(new Button(new Coordinate2D(430, 620), "Multi", Color.RED, Color.DARKRED, game, 1, true));
     }
 
     @Override
@@ -20,6 +23,8 @@ public class TitleScene extends StaticScene {
 
     @Override
     public void setupEntities() {
-        addEntity(playButton);
+        for (Button button : buttons) {
+            addEntity(button);
+        }
     }
 }
