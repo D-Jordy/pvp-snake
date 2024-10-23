@@ -18,9 +18,11 @@ public class GameScene extends DynamicScene {
     private final Game game;
     private final Coordinate2D gridStart = new Coordinate2D(50, 100);
     private final Coordinate2D gridEnd = new Coordinate2D(750, 700);
+    private final boolean multiPlayer;
 
-    public GameScene(Game game) {
+    public GameScene(Game game, boolean multiPlayer) {
         this.game = game;
+        this.multiPlayer = multiPlayer;
     }
 
     @Override
@@ -34,7 +36,10 @@ public class GameScene extends DynamicScene {
         grid.draw(this);
 
         Snake snake = new Snake(new Coordinate2D(400, 300), new Size(50, 50), this, grid, 270, 1, "red", SnakeControls.WASD);
-        Snake snake2 = new Snake(new Coordinate2D(400, 400), new Size(50, 50), this, grid, 90, 1, "blue", SnakeControls.ARROWS);
+
+        if (multiPlayer) {
+            Snake snake2 = new Snake(new Coordinate2D(400, 400), new Size(50, 50), this, grid, 90, 1, "blue", SnakeControls.ARROWS);
+        }
 
         ArrayList<Item> items = new ArrayList<>();
 

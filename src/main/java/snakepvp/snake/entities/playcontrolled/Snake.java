@@ -27,6 +27,7 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
     private final ArrayList<SnakeBendPoint> bendPoints = new ArrayList<>();
     private double direction = 0;
     private int requestedDirection = -1; //-1 means no request
+    private boolean isAlive = true;
 
     public Snake(Coordinate2D headLocation, Size size, GameScene scene, Grid grid, double startDirection, double defaultSpeed, String color, SnakeControls controls) {
         super(color + "-snake.png", headLocation, size);
@@ -219,9 +220,29 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
 
             if (collider instanceof SnakeBodyPart) {
                 if (((SnakeBodyPart) collider).getAnchorLocation().distance(this.getAnchorLocation()) < 5) {
-                    this.scene.changeScene(1);
+                    this.scene.changeScene(2);
+                }
+            }
+
+            if (collider instanceof Snake) {
+                if (((Snake) collider).getAnchorLocation().distance(this.getAnchorLocation()) < 5) {
+                    if (collidedFromSide((Snake) collider)) {
+                        this.isAlive = false;
+                        this.scene.changeScene(2);
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Checks if the snake collided with another snake from the side
+     * Called in onCollision, when the snake collided with another snake
+     *
+     * @param colidedSnake
+     * @return if this snake hit the other snake from the side
+     */
+    public boolean collidedFromSide(Snake colidedSnake) {
+    return this.getDirection() != colidedSnake.getDirection() && this.getDirection() != (colidedSnake.getDirection() + 180) % 360;
     }
 }
