@@ -4,6 +4,7 @@ import com.github.hanyaeger.api.Coordinate2D;
 import snakepvp.snake.entities.items.base.Item;
 import snakepvp.snake.entities.items.base.SpawnableFactory;
 import snakepvp.snake.entities.items.food.types.Apple;
+import snakepvp.snake.entities.items.food.Food;
 
 import java.util.Random;  // Import Random for generating random values
 import java.util.function.Function;

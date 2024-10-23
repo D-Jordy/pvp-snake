@@ -8,7 +8,6 @@ import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
 import javafx.scene.input.KeyCode;
-import snakepvp.snake.entities.items.Item;
 import snakepvp.snake.entities.items.base.Item;
 import snakepvp.snake.scenes.GameScene;
 import javafx.scene.input.KeyCode;
@@ -71,12 +70,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
             default:
                 return headLocation;
         }
-    }
-
-    private SnakeBodyPart spawnSnakeTail(Coordinate2D initialLocation, Size size, GameScene scene, double direction, double speed) {
-        SnakeBodyPart tail = new SnakeTail(color + "-snake-tail.png", initialLocation, size, direction, speed);
-        scene.introduceEntity(tail);
-        return tail;
     }
 
     public void eat() {

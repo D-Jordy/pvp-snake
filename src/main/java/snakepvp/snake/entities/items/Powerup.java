@@ -1,6 +1,7 @@
 package snakepvp.snake.entities.items;
 
 import com.github.hanyaeger.api.Coordinate2D;
+import snakepvp.snake.entities.items.base.Item;
 import snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Powerup extends Item {
