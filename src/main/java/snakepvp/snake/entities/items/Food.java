@@ -7,7 +7,6 @@ import snakepvp.snake.entities.items.spawner.ItemSpawner;
 import snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Food extends Item {
-
     protected Food(String resource, Coordinate2D initialLocation) {
         super(resource, initialLocation);
     }
@@ -17,6 +16,5 @@ public abstract class Food extends Item {
         System.out.println("Snake ate " + getClass().getSimpleName());
         ItemSpawner.spawnItemFromFactory( (SpawnableFactory) FoodFactory.getRandomFoodType());
         snake.eat();
-
     }
 }

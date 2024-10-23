@@ -1,4 +1,4 @@
-package snakepvp.snake.entities.items.food.types;
+package snakepvp.snake.entities.items.food;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import snakepvp.snake.entities.items.food.Food;

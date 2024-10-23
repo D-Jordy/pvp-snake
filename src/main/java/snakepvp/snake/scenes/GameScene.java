@@ -9,6 +9,7 @@ import snakepvp.snake.entities.items.base.Item;
 import snakepvp.snake.entities.items.food.FoodFactory;
 import snakepvp.snake.entities.items.spawner.ItemSpawner;
 import snakepvp.snake.entities.playcontrolled.Snake;
+import snakepvp.snake.entities.playcontrolled.SnakeControls;
 import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ public class GameScene extends DynamicScene {
 
         grid.draw(this);
 
-        Snake snake = new Snake(new Coordinate2D(400, 300), new Size(50, 50), this, grid, 270, 1, "red");
+        Snake snake = new Snake(new Coordinate2D(400, 300), new Size(50, 50), this, grid, 270, 1, "red", SnakeControls.WASD);
+        Snake snake2 = new Snake(new Coordinate2D(400, 400), new Size(50, 50), this, grid, 90, 1, "blue", SnakeControls.ARROWS);
 
         ItemSpawner.spawnItemFromFactory(FoodFactory.getRandomFoodType());
     }

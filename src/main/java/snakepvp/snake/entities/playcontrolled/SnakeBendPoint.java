@@ -25,7 +25,4 @@ public class SnakeBendPoint {
     public double getY(){
         return location.getY();
     }
-
-
-
 }
