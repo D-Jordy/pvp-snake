@@ -8,8 +8,9 @@ import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.userinput.KeyListener;
 import javafx.scene.input.KeyCode;
-import snakepvp.snake.entities.items.Item;
+import snakepvp.snake.entities.items.base.Item;
 import snakepvp.snake.scenes.GameScene;
+import javafx.scene.input.KeyCode;
 import snakepvp.snake.scenes.grid.Grid;
 
 import java.util.ArrayList;
@@ -94,6 +95,15 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         scene.introduceEntity(newBodypart);
     }
 
+    private double checkIfSpawnedOnBendpoint(Coordinate2D spawnLocation){
+        for (SnakeBendPoint snakeBendPoint : bendPoints) {
+            if (snakeBendPoint.getX() == spawnLocation.getX() && snakeBendPoint.getY() == spawnLocation.getY()) {
+                return snakeBendPoint.getDirection();
+            }
+        }
+        return -1.0;
+    }
+
     private SnakeTail getSnakeTail() {
         for (SnakeBodyPart bodyPart : bodyParts) {
             //checks if bodypart is SnakeTail
@@ -113,7 +123,6 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
             bendPoints.add(new SnakeBendPoint(getLocationInScene(), requestedDirection));
 
             //set requestedDirection to -1 to tell code that there is no requested direction
-            //poep
             requestedDirection = -1;
         }
     }
@@ -214,7 +223,8 @@ public class Snake extends DynamicSpriteEntity implements KeyListener, Collider,
         for (Collider collider : list) {
 
             if (collider instanceof Item) {
-                ((Item) collider).handleCollision(this);
+                ((Item) collider).handleCollision(this, collider);
+
             }
 
             if (collider instanceof SnakeBodyPart) {

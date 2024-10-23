@@ -1,6 +1,9 @@
-package snakepvp.snake.entities.items;
+package snakepvp.snake.entities.items.food;
 
 import com.github.hanyaeger.api.Coordinate2D;
+import snakepvp.snake.entities.items.base.Item;
+import snakepvp.snake.entities.items.base.SpawnableFactory;
+import snakepvp.snake.entities.items.spawner.ItemSpawner;
 import snakepvp.snake.entities.playcontrolled.Snake;
 
 public abstract class Food extends Item {
@@ -11,6 +14,7 @@ public abstract class Food extends Item {
     @Override
     public void handleSnakeCollision(Snake snake) {
         System.out.println("Snake ate " + getClass().getSimpleName());
+        ItemSpawner.spawnItemFromFactory( (SpawnableFactory) FoodFactory.getRandomFoodType());
         snake.eat();
     }
 }

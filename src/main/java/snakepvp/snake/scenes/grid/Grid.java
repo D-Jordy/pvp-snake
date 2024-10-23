@@ -56,7 +56,17 @@ public class Grid implements GridComponent {
     }
 
 
-    public GridCell getRandomCell() {
+    public Coordinate2D getRandomCellCoordinates(int spaceFromBorder){
+        GridCell randomCell = getRandomCell(spaceFromBorder);
+        return new Coordinate2D(randomCell.getX(), randomCell.getY());
+    }
+
+    public Coordinate2D getRandomCellCoordinates(){
+        GridCell randomCell = getRandomCell(0);
+        return new Coordinate2D(randomCell.getX(), randomCell.getY());
+    }
+
+    public GridCell getRandomCell(){
         return getRandomCell(0);
     }
 
